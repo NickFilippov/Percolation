@@ -196,7 +196,7 @@ class Ant {
 			this.addCellsCount++;
 		}
 		this.walk.push(cellGrid[0][this.base]);		
-		while(this.column!=cellGrid[0].length-1){
+		while(this.row!=cellGrid[0].length-1){
 			let nextCell=this.chooseNext(cellGrid);
 			if(!nextCell){
 				//console.log('something wrong!');
@@ -243,12 +243,12 @@ class Ant {
 		//Вычисление вероятностей для выбора след ячейки, ТУДУ: подобрать коэффициенты Qph,Qi,Ql
 		let sumall=0;
 		for(let k=0;k<probs.length;k++){
-			sumall=sumall+Math.pow(probs[k].pheromone,this.Qph)*Math.pow(((probs[k].getj()>curj)?2:1),this.Qi)*Math.pow(probs[k].labelKo,this.Ql);
+			sumall+=Math.pow(probs[k].pheromone,this.Qph)*Math.pow(((probs[k].geti()>curi)?2:1),this.Qi)*Math.pow(probs[k].labelKo,this.Ql);
 		}
 
 		let prs=[];
 		for(let k=0;k<probs.length;k++){
-			let mul=Math.pow(probs[k].pheromone,this.Qph)*Math.pow(((probs[k].getj()>curj)?2:1),this.Qi)*Math.pow(probs[k].labelKo,this.Ql);
+			let mul=Math.pow(probs[k].pheromone,this.Qph)*Math.pow(((probs[k].geti()>curi)?2:1),this.Qi)*Math.pow(probs[k].labelKo,this.Ql);
 			prs.push(mul/sumall);
 		}
 
@@ -316,6 +316,9 @@ class Colony {
 	getBestCellsCount(){
 		return this.bestCellsCount;
 	}
+	getCellsCount(an){
+		return this.population[an].getCellsCount();
+	}
 	getWalk(i){
 		return this.population[i].getWalk();
 	}
@@ -327,8 +330,8 @@ class Colony {
 	}
 
 	evaporatePheromones(){
-		for(i = 0; i<this.gridsize;i++){
-			for(j=0; j<this.gridsize; j++){
+		for(let i = 0; i<this.gridsize;i++){
+			for(let j = 0; j<this.gridsize; j++){
 				let ph=(1-this.pho)*this.cellgrid[i][j].getPheromone();
 				if(ph<1) ph=1;
 				this.cellgrid[i][j].setPheromone(ph);
@@ -396,11 +399,11 @@ function draw_grid(data, upd, way) {
 	                    continue;
 	                }
             	} 
-                context.clearRect(i*width_cell, ii*height_cell, width_cell, height_cell);
+                context.clearRect(ii*width_cell, i*height_cell, width_cell, height_cell);
                 context.fillStyle = color_for_cell(data[i][ii]);
                 context.strokeStyle= "rgb(200,200,200)";
-                context.fillRect(i*width_cell, ii*height_cell, width_cell, height_cell);
-                context.strokeRect(i*width_cell, ii*height_cell, width_cell, height_cell);
+                context.fillRect(ii*width_cell, i*height_cell, width_cell, height_cell);
+                context.strokeRect(ii*width_cell, i*height_cell, width_cell, height_cell);
             }
         }
         
@@ -408,7 +411,7 @@ function draw_grid(data, upd, way) {
 	        for(var j=0;j<way.length;j++){
 	        	i=way[j].geti();
 	        	ii=way[j].getj();
-	        	context.clearRect(i*width_cell, ii*height_cell, width_cell, height_cell);
+	        	context.clearRect(ii*width_cell, i*height_cell, width_cell, height_cell);
 	        	if(way[j].getLabel()==0){
 	        		context.fillStyle = "rgb(255,0,0)";
 	        	}
@@ -416,8 +419,8 @@ function draw_grid(data, upd, way) {
 	        		context.fillStyle = "rgb(0,0,0)";
 	        	}
 	            context.strokeStyle= "rgb(200,200,200)";
-	            context.fillRect(i*width_cell, ii*height_cell, width_cell, height_cell);
-	            context.strokeRect(i*width_cell, ii*height_cell, width_cell, height_cell);
+	            context.fillRect(ii*width_cell, i*height_cell, width_cell, height_cell);
+	            context.strokeRect(ii*width_cell, i*height_cell, width_cell, height_cell);
 	        }
 	    }
     }

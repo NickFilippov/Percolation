@@ -93,6 +93,7 @@ var g, size_m=0;
     colony.initialise();
     colony.sendOutAnts();
     draw_grid(grid2,0,colony.bestWay);
+    document.getElementById("cellscount").innerHTML=colony.getBestCellsCount()
     
     /*
     makeTable(g);
@@ -162,12 +163,13 @@ var g, size_m=0;
   }
 </script>
 
-<p><input value="Построить лучший путь" onclick="draw_grid(grid2,0,colony.bestWay);" type="button"></p>
+<p><input value="Построить лучший путь" onclick="draw_grid(grid2,0,colony.bestWay);document.getElementById('cellscount').innerHTML=colony.getBestCellsCount();" type="button"></p>
+<p>Количество добавленных клеток: <span id="cellscount"></span></p>
 <form id="antform">
   <p>Построить путь муравья под номером:</p>
   <p>
     <input type="number" min="0" max="javascript:antcnt-1" id="antnumber">
-    <input value="Построить путь" onclick="draw_grid(grid2,0,colony.getWalk(document.forms['antform'].elements['antnumber'].value))" type="button">
+    <input value="Построить путь" onclick="antn=document.forms['antform'].elements['antnumber'].value;draw_grid(grid2,0,colony.getWalk(antn));document.getElementById('cellscount').innerHTML=colony.getCellsCount(antn);" type="button">
   </p>
 </form>
 

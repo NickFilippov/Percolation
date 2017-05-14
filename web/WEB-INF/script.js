@@ -77,10 +77,10 @@ function getRandomColor() {
     }
     return color;
 }
-client_height = document.documentElement.clientHeight-100;
+
 function makeTable(grid) {
     mT = grid[0].length;
-    tdSize=Math.floor((client_height/mT))+"px";
+    tdSize=Math.floor(((document.documentElement.clientHeight-200)/mT))+"px";
     td = "<td style = 'background-color:#ffffff; width:" + tdSize + "; height:" + tdSize + "'></td>";
     tHeader = "<table id = 'table' style = 'background-color:#cccccc'; border = 0.5px";
     document.write(tHeader);
@@ -99,7 +99,7 @@ function makeTable(grid) {
 function makeTableRed(grid) {
     var colors=["#ffffff","#A6A6A6", "#ff0000", "#000000"];
     mT = grid[0].length;
-    tdSize=Math.floor((client_height/mT))+"px";
+    tdSize=Math.floor(((document.documentElement.clientHeight-200)/mT))+"px";
     td = "<td style = 'background-color:#ffffff; width:" + tdSize + "; height:" + tdSize + "'></td>";
     tHeader = "<table id = 'table' style = 'background-color:#cccccc'; border = 0.5px";
     document.write(tHeader);

@@ -11,10 +11,10 @@
     <script type = "text/javascript" src = "AntChary1.js"></script>
     <script type = "text/javascript" src = "AntChary2.js"></script>
 
-    <title >Обработка статестических данных</title>
+    <title >Статистическое сравнение алгоритмов</title>
 </head>
 <body>
-<h2>Обработка статестических данных</h2>
+<h2>Статистическое сравнение алгоритмов</h2>
 <fieldset>
 	<legend><strong> Выберите параметры матрицы: </strong></legend>
 	<p><strong> Выберите размер матрицы: </strong></p>
@@ -42,8 +42,9 @@
 </fieldset>
 
 
-
+<h4>Зависимость количества добавленных красных клеток от концентрации</h4>
 <div id="line_top_x" hidden></div>
+<h4>Зависимость времени выполнения алгоритмов(мс) от размера матрицы</h4>
 <div id="line_top_x2" hidden></div>
 <script type="text/javascript">
 	var size_m =10;
@@ -71,7 +72,7 @@
     	drawAntChart1();
 
       var items =[];
-      timeStat(+document.getElementById("inputant").value, +document.getElementById("maxsz").value);
+      timeStat(+document.getElementById("inputant").value, +document.getElementById("maxsz").value, +document.getElementById("input2").value);
       drawAntChart2();
 
   	};
