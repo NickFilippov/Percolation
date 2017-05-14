@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск кратчайшего пути</title>
+
+    
+    <script type = "text/javascript" src = "script.js"></script>
+</head>
+<body>
+<h2>Поиск кратчайшего пути</h2>
+<fieldset>
+    <legend><strong> Выберите параметры матрицы: </strong></legend>
+    <p><strong> Выберите размер матрицы: </strong></p>
+    <table border="0">
+
+       <tr><td><input type="radio" name="radio1" id ="r1" checked></td><td>20x20</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r2"></td><td>50x50</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r3"></td><td>100x100</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r4"></td><td>200x200</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r5"></td><td> <input id="input2" type="text" size="6" disabled></td><td><span id="span1"></span></td></tr>  
+    </table>
+
+    <p><strong> Выберите закон заполнения матрицы: </strong></p>
+
+
+    
+    <table border="1">
+       <tr><td colspan="2">случайные:</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r6" checked></td><td>равномерное</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r7" ></td><td>равномерное с заданной концентрацией</br>концентрация: <input id="input3" type="text" size="6" disabled><span id="span2"></span></td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r8"></td><td>градиентное</td></tr>
+       <!--<tr><td><input type="radio" name="radio2" id ="r9"></td><td>нормальное</td></tr> -->
+       <tr><td colspan="2">детерминированные:</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r10" ></td><td>горизонтальные линии</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r11"></td><td>вертикальные линии</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r12"></td><td>Дождь</td></tr> 
+
+       <tr><td><input type="radio" name="radio2" id ="r13"></td><td>Шахматная доска</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r14"></td><td>Квадраты</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r15"></td><td>Буквы "H"</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r16"></td><td>Буквы "Х"</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r17"></td><td>Буквы "Ш"</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r18"></td><td>Соты</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r19"></td><td>Ромбы</td></tr> 
+    </table>
+
+    <p><input id="but1" type="submit" value="Отобразить"></p>
+</fieldset>
+
+</br>
+
+<script type = "text/javascript" src = "generaters.js"></script>
+<script type="text/javascript">
+var but = document.getElementById("but1");
+var g, size_m=0;
+//line_top_x.hidden=false;
+    but.onclick = function() {
+        
+    
+    if (r1.checked) size_m=20;
+    if (r2.checked) size_m=50;
+    if (r3.checked) size_m=100;
+    if (r4.checked) size_m=200;
+    if (r5.checked) size_m=+document.getElementById("input2").value;
+    //console.log(g);
+    
+
+    if (r6.checked) g = generateRandomUniformGrid(size_m);
+    if (r7.checked) g = generateRandomGrid(size_m, +document.getElementById("input3").value);
+    if (r8.checked) g = generateGradientGrid(size_m);
+    //if (r9.checked) g = generateGradientGrid(size_m);
+
+    if (r10.checked) g = generateHorizontalLinesGrid(size_m);
+    if (r11.checked) g = generateVerticalLinesGrid(size_m);
+    if (r12.checked) g = generateRainGrid(size_m);
+    if (r13.checked) g = generateChessGrid(size_m);
+    if (r14.checked) g = generateSquareGrid(size_m);
+    if (r15.checked) g = generateHGrid(size_m);
+    if (r16.checked) g = generateXGrid(size_m);
+    if (r17.checked) g = generateShGrid(size_m);
+    if (r18.checked) g = generateCellGrid(size_m);
+    if (r19.checked) g = generateСircleGrid(size_m);
+
+
+    if (size_m <= 100) document.write("<table><tr><td>");
+    makeTable(g);
+    if (size_m <= 100) document.write("</td><td>");
+    else document.write("</br>");
+
+    grid1 = ArClone(g);
+    grid11 = ArClone(g);
+
+    for (var i = 0; i < grid1[0].length; i++) {
+      for (var j = 0; j < grid1[0].length; j++) {
+        if (grid1[i][j] == 0) grid1[i][j] = grid1[0].length * grid1[0].length+10000;
+      }
+    }
+
+
+    var map = getMap(grid1);
+    graph = new Graph(map);     
+    var kr_best = grid1[0].length*grid1[0].length; 
+    //ar_best;
+    for (var j = 0; j < grid1[0].length; j++) {
+     
+    //var ar ;//=graph.findShortestPath(Math.round(grid1[0].length/2), "" + grid1[0].length - 1 + "_0");
+    var k_best = grid1[0].length;
+    var l_best = grid1[0].length * grid1[0].length;
+
+      for (var i = 0; i < grid1[0].length - 1; i++) {
+
+          var k_min = 0, l_min = 0;
+          var v = graph.findShortestPath(j, "" + grid1[0].length - 1 + "_"+i);
+          while ( v[v.length-2].split("_")[0]==grid1[0].length-1 )
+                v.length = v.length-1;
+
+          l_min=v.length;
+
+          var k = 1;
+          if (v[0] === "0_0") k =0;
+          for (; k < v.length; k++) {
+                  var ii = parseInt(v[k].split("_")[0], 10),
+                      jj = parseInt(v[k].split("_")[1], 10);
+
+                  if (grid11[ii][jj] == 0) k_min++;
+          }
+          if (k_min<=k_best) {
+            if (k_min<k_best){
+              ar = graph.findShortestPath(j, "" + grid1[0].length - 1 + "_"+i);
+              while ( ar[ar.length-2].split("_")[0]==grid1[0].length-1 )
+                ar.length = ar.length-1;
+                //delete ar[ar.length-1];
+                //ar[ar.length-1]=unde
+
+              k_best=k_min;
+              l_best=l_min;
+            }
+            if (k_min=k_best && l_best>l_min){
+              ar = v;// graph.findShortestPath(Math.round(grid1[0].length/2), "" + grid1[0].length - 1 + "_"+i);
+              k_best=k_min;
+              l_best=l_min;
+            }
+          }
+        }
+console.log('.');
+          var kr =0;
+          var i = 1;
+          if (ar[0] === "0_0") i =0;
+          for (;i<ar.length;i++){
+            var ii = parseInt(ar[i].split("_")[0], 10),
+                jj = parseInt(ar[i].split("_")[1], 10);
+
+            if (grid11[ii][jj] == 0)
+              kr++;
+          }
+          if (kr<kr_best){
+            ar_best = ar;
+            kr_best = kr;
+          }
+
+        }
+    ar = ar_best;
+
+  
+    
+    var k = 1;
+    if (ar[0] === "0_0") k =0;
+    redClust =0;
+    arSizeRedEl = [];
+    RedEl = 0;
+    for (; k < ar.length; k++) {
+              
+                var ii = parseInt(ar[k].split("_")[0], 10),
+                    jj = parseInt(ar[k].split("_")[1], 10);
+
+                if (grid11[ii][jj] == 0) {
+                    redClust++;
+                    grid11[ii][jj] = 2;
+                    RedEl++;
+                }
+                if (grid11[ii][jj] == 1) {
+                    if (RedEl != 0) {
+                      arSizeRedEl.push(RedEl);
+                      RedEl = 0;
+                    }
+                    grid11[ii][jj] = 3;
+                }
+
+            }
+
+    if (RedEl != 0) {
+      arSizeRedEl.push(RedEl);
+      RedEl = 0;
+    }
+
+    
+    makeTableRed(grid11);
+    if (size_m <= 100) document.write("</td></tr></table>");
+    var lenWay = (ar.length - 1); 
+    if (ar[0] === "0_0") lenWay = ar.length;
+    document.write("<p> Длина пути: " + lenWay + "</p>");
+    document.write("<p> Количество красный элементов: " + redClust + "</p>");
+
+     average = 0;
+    if (arSizeRedEl.length > 0)
+    {
+        var sumn = 0;
+        for (var j = 0; j < arSizeRedEl.length; j++) {
+             sumn += arSizeRedEl[j];
+        }
+        average = sumn / arSizeRedEl.length;
+    }
+
+    document.write("<p> Средний размер дырки: " + average + "</p>");
+}
+    
+
+
+
+
+    for (var i = 1; i <= 5; i++) {
+        document.getElementById("r"+i).onclick = function() {
+            if (r5.checked){
+                input2.disabled=false;
+            }
+            else{
+                input2.disabled=true;
+            }
+        };
+    }
+
+
+    for (var i = 6; i <= 19 && i !=9; i++) {
+        document.getElementById("r"+i).onclick = function() {
+            if (r7.checked){
+                input3.disabled=false;
+            }
+            else{
+                input3.disabled=true;
+            }
+        };
+    }
+
+  var input2 = document.getElementById('input2');
+  input2.oninput = function() {
+    //alert(document.getElementById("input1").value==="");
+    if(!isNaN(document.getElementById("input2").value))
+        document.getElementById('span1').innerHTML = "( "+input2.value+"x"+input2.value+" )";
+    else
+        document.getElementById('span1').innerHTML = "ошибка";
+
+    if (document.getElementById("input2").value ==="")
+        document.getElementById('span1').innerHTML = "";
+
+  };
+
+  var input = document.getElementById('input3');
+  input.oninput = function() {
+    //alert(document.getElementById("input1").value==="");
+    if(isNaN(document.getElementById("input3").value))
+       document.getElementById('span2').innerHTML = "ошибка";
+
+    if (document.getElementById("input3").value ==="")
+        document.getElementById('span2').innerHTML = "";
+
+  }
+</script>
+</body>
+</html>

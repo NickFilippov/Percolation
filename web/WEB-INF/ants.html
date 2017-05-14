@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Проверка Муравьиного алгоритма</title>
+
+    <script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type = "text/javascript" src = "script.js"></script>
+    <script type = "text/javascript" src = "generaters.js"></script>
+    <script type = "text/javascript" src = "ant.js"></script>
+    <script type = "text/javascript" src = "statistic.js"></script>
+</head>
+<body>
+<h2>Проверка Муравьиного алгоритма</h2>
+<fieldset>
+    <legend><strong> Выберите параметры матрицы: </strong></legend>
+    <p><strong> Выберите размер матрицы: </strong></p>
+    <table border="0">
+
+       <tr><td><input type="radio" name="radio1" id ="r1" checked></td><td>20x20</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r2"></td><td>50x50</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r3"></td><td>100x100</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r4"></td><td>200x200</td><td></td></tr>
+       <tr><td><input type="radio" name="radio1" id ="r5"></td><td> <input id="input2" type="text" size="6" disabled></td><td><span id="span1"></span></td></tr>  
+    </table>
+
+    <p><strong> Выберите закон заполнения матрицы: </strong></p>
+
+
+    
+    <table border="1">
+       <tr><td colspan="2">случайные:</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r6" checked></td><td>равномерное</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r7" ></td><td>равномерное с заданной концентрацией</br>концентрация: <input id="input3" type="text" size="6" disabled><span id="span2"></span></td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r8"></td><td>градиентное</td></tr>
+       <!--<tr><td><input type="radio" name="radio2" id ="r9"></td><td>нормальное</td></tr> -->
+       <tr><td colspan="2">детерминированные:</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r10" ></td><td>горизонтальные линии</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r11"></td><td>вертикальные линии</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r12"></td><td>Дождь</td></tr> 
+
+       <tr><td><input type="radio" name="radio2" id ="r13"></td><td>Шахматная доска</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r14"></td><td>Квадраты</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r15"></td><td>Буквы "H"</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r16"></td><td>Буквы "Х"</td></tr>
+       <tr><td><input type="radio" name="radio2" id ="r17"></td><td>Буквы "Ш"</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r18"></td><td>Соты</td></tr> 
+       <tr><td><input type="radio" name="radio2" id ="r19"></td><td>Ромбы</td></tr> 
+    </table>
+
+    <p><strong> Введите количество муравьев: </strong></p>
+    <input id="inputant" type="text" size="6"><span id="span1"></span>
+
+    <p><input id="but1" type="submit" value="Отобразить"></p>
+</fieldset>
+
+</br>
+
+<script type="text/javascript">
+var but = document.getElementById("but1");
+var g, size_m=0;
+//line_top_x.hidden=false;
+    but.onclick = function() {   
+    
+    if (r1.checked) size_m=20;
+    if (r2.checked) size_m=50;
+    if (r3.checked) size_m=100;
+    if (r4.checked) size_m=200;
+    if (r5.checked) size_m=+document.getElementById("input2").value;
+    //console.log(g);
+    
+
+    if (r6.checked) g = generateRandomUniformGrid(size_m);
+    if (r7.checked) g = generateRandomGrid(size_m, +document.getElementById("input3").value);
+    if (r8.checked) g = generateGradientGrid(size_m);
+    //if (r9.checked) g = generateGradientGrid(size_m);
+
+    if (r10.checked) g = generateHorizontalLinesGrid(size_m);
+    if (r11.checked) g = generateVerticalLinesGrid(size_m);
+    if (r12.checked) g = generateRainGrid(size_m);
+    if (r13.checked) g = generateChessGrid(size_m);
+    if (r14.checked) g = generateSquareGrid(size_m);
+    if (r15.checked) g = generateHGrid(size_m);
+    if (r16.checked) g = generateXGrid(size_m);
+    if (r17.checked) g = generateShGrid(size_m);
+    if (r18.checked) g = generateCellGrid(size_m);
+    if (r19.checked) g = generateСircleGrid(size_m);
+
+    antcnt=document.getElementById("inputant").value;
+    grid2=buildCellGrid(g);
+    colony=new Colony(antcnt,1,grid2,2,5,6,0.1);
+    draw_grid(grid2,0,null);
+    colony.initialise();
+    colony.sendOutAnts();
+    draw_grid(grid2,0,colony.bestWay);
+    
+    /*
+    makeTable(g);
+    document.write("</br></br>");
+    HoshenKopelman(g);
+    makeTable(g);*/
+    // var r = countClusters(g); 
+    // console.log(r);
+    // var s = 0;
+    // for (var i = 0; i <arr_count.length; i++) {
+    //   if (arr_count[i] != undefined)
+    //     s += arr_count[i];
+      
+    // }
+    // console.log(s/r);
+    
+    }
+
+
+
+
+    for (var i = 1; i <= 5; i++) {
+        document.getElementById("r"+i).onclick = function() {
+            if (r5.checked){
+                input2.disabled=false;
+            }
+            else{
+                input2.disabled=true;
+            }
+        };
+    }
+
+
+    for (var i = 6; i <= 19 && i !=9; i++) {
+        document.getElementById("r"+i).onclick = function() {
+            if (r7.checked){
+                input3.disabled=false;
+            }
+            else{
+                input3.disabled=true;
+            }
+        };
+    }
+
+  var input2 = document.getElementById('input2');
+  input2.oninput = function() {
+    //alert(document.getElementById("input1").value==="");
+    if(!isNaN(document.getElementById("input2").value))
+        document.getElementById('span1').innerHTML = "( "+input2.value+"x"+input2.value+" )";
+    else
+        document.getElementById('span1').innerHTML = "ошибка";
+
+    if (document.getElementById("input2").value ==="")
+        document.getElementById('span1').innerHTML = "";
+
+  };
+
+  var input = document.getElementById('input3');
+  input.oninput = function() {
+    //alert(document.getElementById("input1").value==="");
+    if(isNaN(document.getElementById("input3").value))
+       document.getElementById('span2').innerHTML = "ошибка";
+
+    if (document.getElementById("input3").value ==="")
+        document.getElementById('span2').innerHTML = "";
+
+  }
+</script>
+
+<p><input value="Построить лучший путь" onclick="draw_grid(grid2,0,colony.bestWay);" type="button"></p>
+<form id="antform">
+  <p>Построить путь муравья под номером:</p>
+  <p>
+    <input type="number" min="0" max="javascript:antcnt-1" id="antnumber">
+    <input value="Построить путь" onclick="draw_grid(grid2,0,colony.getWalk(document.forms['antform'].elements['antnumber'].value))" type="button">
+  </p>
+</form>
+
+
+
+
+
+<!-- <script type="text/javascript">
+    var g = generateRandomUniformGrid(50);
+    console.log(g);
+    makeTable(g);
+    document.write("</br></br>");
+    HoshenKopelman(g);
+    makeTable(g);
+
+
+</script> -->
+</body>
+</html>

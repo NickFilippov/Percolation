@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type = "text/javascript" src = "script.js"></script>
+    <script type = "text/javascript" src = "ant.js"></script>
+    <script type = "text/javascript" src = "generaters.js"></script>
+
+    <script type = "text/javascript" src = "AntChary1.js"></script>
+    <script type = "text/javascript" src = "AntChary2.js"></script>
+
+    <title >Обработка статестических данных</title>
+</head>
+<body>
+<h2>Обработка статестических данных</h2>
+<fieldset>
+	<legend><strong> Выберите параметры матрицы: </strong></legend>
+	<p><strong> Выберите размер матрицы: </strong></p>
+	<table border="0">
+	   <tr><td><input type="radio" name="radio1" id ="r1" checked></td><td>20x20</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r2"></td><td>50x50</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r3"></td><td>100x100</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r4"></td><td>200x200</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r5"></td><td> <input id="input1" type="text" size="6" disabled></td><td><span id="span1"></span></td></tr>  
+	</table>
+
+	<p><strong>Закон заполнения матрицы: равномерное распеределение.</strong></p>
+
+
+  <p><strong> Выберите параметр усреднения: </strong>
+  <input type ="number" id="input2"></p>
+
+  <p><strong> Выберите количество муравьёв: </strong>
+  <input type ="number" id="inputant"></p>
+
+  <p><strong> Выберите максимальный размер матрицы (для проверки времени выполнения): </strong>
+  <input type ="number" id="maxsz"></p>
+
+	<p><input id="but11" type="submit" value="Построить графики"></p>
+</fieldset>
+
+
+
+<div id="line_top_x" hidden></div>
+<div id="line_top_x2" hidden></div>
+<script type="text/javascript">
+	var size_m =10;
+  var items =[];
+	var but = document.getElementById("but11");
+//line_top_x.hidden=false;
+  	but.onclick = function() {
+  		
+  		document.getElementById("line_top_x").hidden=false;
+  		document.getElementById("line_top_x2").hidden=false;
+  		//console.log(document.getElementById("line_top_x").hidden);
+
+      if (r1.checked) size_m=20;
+  	  if (r2.checked) size_m=50;
+  	  if (r3.checked) size_m=100;
+  	  if (r4.checked) size_m=200;
+  	  if (r5.checked) size_m=+document.getElementById("input1").value;
+
+    
+
+
+  	  ///alert(raspr.split("_")[1]); 
+    	statistic(+document.getElementById("input2").value, size_m, +document.getElementById("inputant").value);
+
+    	drawAntChart1();
+
+      var items =[];
+      timeStat(+document.getElementById("inputant").value, +document.getElementById("maxsz").value);
+      drawAntChart2();
+
+  	};
+
+
+
+
+	
+	
+
+
+	
+</script>
+
+
+<script type="text/javascript">
+	for (var i = 1; i <= 5; i++) {
+		document.getElementById("r"+i).onclick = function() {
+    		if (r5.checked){
+    			input1.disabled=false;
+    		}
+    		else{
+    			input1.disabled=true;
+    		}
+  		};
+  	}
+</script>
+
+<script>
+  var input = document.getElementById('input1');
+
+  input.oninput = function() {
+  	//alert(document.getElementById("input1").value==="");
+  	if(!isNaN(document.getElementById("input1").value))
+  		document.getElementById('span1').innerHTML = "( "+input.value+"x"+input.value+" )";
+  	else
+  		document.getElementById('span1').innerHTML = "ошибка";
+
+  	if (document.getElementById("input1").value ==="")
+  		document.getElementById('span1').innerHTML = "";
+
+  };
+</script>
+</body>
+</html>

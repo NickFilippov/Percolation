@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type = "text/javascript" src = "script.js"></script>
+
+    <script type = "text/javascript" src = "lineChary.js"></script>
+    <script type = "text/javascript" src = "lineChary2.js"></script>
+    <script type = "text/javascript" src = "lineChary3.js"></script>
+
+    <title >Обработка статестических данных</title>
+</head>
+<body>
+<h2>Обработка статестических данных</h2>
+<fieldset>
+	<legend><strong> Выберите размер матрицы: </strong></legend>
+	<p><strong> Выберите размер матрицы: </strong></p>
+	<table border="0">
+	   <tr><td><input type="radio" name="radio1" id ="r1" checked></td><td>20x20</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r2"></td><td>50x50</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r3"></td><td>100x100</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r4"></td><td>200x200</td><td></td></tr>
+	   <tr><td><input type="radio" name="radio1" id ="r5"></td><td> <input id="input1" type="text" size="6" disabled></td><td><span id="span1"></span></td></tr>  
+	</table>
+
+	<p><strong> Выберите закон заполнения матрицы: </strong></p>
+
+
+	
+	<table border="0">
+	   <tr><td><input type="radio" name="radio2" id ="r6" checked></td><td>равномерное распеределение</td></tr>
+	   <tr><td><input type="radio" name="radio2" id ="r7"></td><td>градиентное</td></tr>
+	   <tr><td><input type="radio" name="radio2" id ="r8"></td><td>нормальное</td></tr> 
+	</table>
+
+	<p><input id="but1" type="submit" value="Отправить"></p>
+</fieldset>
+
+<div id="wait" hidden></div>
+
+<div id="line_top_x" hidden></div>
+<div id="line_top_x2" hidden></div>
+<div id="line_top_x3" hidden></div>
+<script type="text/javascript">
+	var size_m =10;
+var items =[];
+	var but = document.getElementById("but1");
+//line_top_x.hidden=false;
+  	but.onclick = function() {
+  		document.getElementById("wait").hidden=false;
+  		document.getElementById("line_top_x").hidden=false;
+  		document.getElementById("line_top_x2").hidden=false;
+  		document.getElementById("line_top_x3").hidden=false;
+  		//console.log(document.getElementById("line_top_x").hidden);
+    
+    	if (r1.checked) size_m=20;
+  	    if (r2.checked) size_m=50;
+  	    if (r3.checked) size_m=100;
+  	    if (r4.checked) size_m=200;
+  	    if (r5.checked) size_m=+document.getElementById("input1").value;
+  	    //console.log(size_m);
+    	statistic(10, size_m, "равномерное");
+
+    	drawChart1();
+    	drawChart2();
+    	drawChart3();
+	
+  	};
+
+
+
+
+	
+	
+
+
+	
+</script>
+
+
+<script type="text/javascript">
+	for (var i = 1; i <= 5; i++) {
+		document.getElementById("r"+i).onclick = function() {
+    		if (r5.checked){
+    			input1.disabled=false;
+    		}
+    		else{
+    			input1.disabled=true;
+    		}
+  		};
+  	}
+</script>
+
+<script>
+  var input = document.getElementById('input1');
+
+  input.oninput = function() {
+  	//alert(document.getElementById("input1").value==="");
+  	if(!isNaN(document.getElementById("input1").value))
+  		document.getElementById('span1').innerHTML = "( "+input.value+"x"+input.value+" )";
+  	else
+  		document.getElementById('span1').innerHTML = "ошибка";
+
+  	if (document.getElementById("input1").value ==="")
+  		document.getElementById('span1').innerHTML = "";
+
+  };
+</script>
+</body>
+</html>
